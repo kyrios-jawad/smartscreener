@@ -2,8 +2,10 @@ package com.odes.smartscreener;
 
 import android.app.*;
 import android.content.*;
+import android.database.Cursor;
 import android.graphics.*;
 import android.os.*;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -32,30 +34,41 @@ public class ScreenshotService extends Service {
     }
 
     private void watchScreenshots() {
-        File folder = new File(SCREENSHOT_PATH);
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
+        ContentResolver contentResolver = getContentResolver();
+        String[] projection = {
+                MediaStore.Images.Media._ID,
+                MediaStore.Images.Media.DISPLAY_NAME,
+                MediaStore.Images.Media.DATA,
+                MediaStore.Images.Media.DATE_ADDED
+        };
 
         while (true) {
-            File[] files = folder.listFiles();
-            if (files != null) {
-                long now = System.currentTimeMillis();
+            long currentTimeSeconds = System.currentTimeMillis() / 1000;
 
-                for (File file : files) {
-                    String name = file.getName();
-                    long lastModified = file.lastModified();
+            Cursor cursor = contentResolver.query(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    projection,
+                    MediaStore.Images.Media.DATE_ADDED + " >= ?",
+                    new String[]{String.valueOf(currentTimeSeconds - 10)}, // last 5 seconds
+                    MediaStore.Images.Media.DATE_ADDED + " DESC"
+            );
 
-                    // Only process new screenshots created in the last 10 seconds
-                    if (!seen.contains(name) && name.startsWith("Screenshot") && (now - lastModified) < 10000) {
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME));
+                    String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+
+                    if (name.toLowerCase().contains("screenshot") && !seen.contains(name)) {
                         seen.add(name);
-                        Log.d("ScreenshotService", "New screenshot: " + file.getAbsolutePath());
-                        overlayTimestamp(file);
+                        Log.d("ScreenshotService", "Detected screenshot: " + path);
+                        overlayTimestamp(new File(path));
                     }
                 }
+                cursor.close();
             }
+
             try {
-                Thread.sleep(5000); // Poll every 3 seconds
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 break;
             }
