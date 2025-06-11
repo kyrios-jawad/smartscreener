@@ -2,6 +2,7 @@ package com.odes.smartscreener;
 
 import android.app.*;
 import android.content.*;
+import android.content.pm.ServiceInfo;
 import android.database.Cursor;
 import android.graphics.*;
 import android.os.*;
@@ -23,12 +24,17 @@ public class ScreenshotService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        createNotificationChannel();
-        startForeground(1, new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("ScreenshotPro")
-                .setContentText("will add timestamp on every new screenshot.")
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Smart Screener")
+                .setContentText("Watching for new screenshots...")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .build());
+                .build();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { // Android 11+
+            startForeground(1, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
+        } else {
+            startForeground(1, notification);
+        }
 
         new Thread(this::watchScreenshots).start();
     }

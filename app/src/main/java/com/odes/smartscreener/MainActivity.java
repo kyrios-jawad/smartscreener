@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -26,7 +27,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startScreenshotService() {
-        Intent intent = new Intent(this, ScreenshotService.class);
-        startForegroundService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            ContextCompat.startForegroundService(this, new Intent(this, ScreenshotService.class));
+        } else {
+            startService(new Intent(this, ScreenshotService.class));
+        }
+
     }
 }
