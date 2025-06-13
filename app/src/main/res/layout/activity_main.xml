@@ -5,15 +5,48 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context=".MainActivity">
 
+    <!-- Main permission text -->
     <TextView
+        android:id="@+id/permissionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="Required Permission is Granted"
+        android:textColor="#4CAF50"
+        android:textSize="22sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Additional description text -->
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
+        android:text="All new screenshots will have the timestamp label displayed in the top right corner"
+        android:textColor="#757575"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/permissionTextView" />
+
+    <!-- Status indicator -->
+    <View
+        android:id="@+id/statusIndicator"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@android:drawable/presence_online"
+        app:layout_constraintBottom_toBottomOf="@+id/permissionTextView"
+        app:layout_constraintEnd_toStartOf="@+id/permissionTextView"
+        app:layout_constraintTop_toTopOf="@+id/permissionTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

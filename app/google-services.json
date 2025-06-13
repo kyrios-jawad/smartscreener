@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "301978835656",
+    "project_id": "smart-screenshot-9b925",
+    "storage_bucket": "smart-screenshot-9b925.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:301978835656:android:bce727aedb4e201af263fd",
+        "android_client_info": {
+          "package_name": "com.odes.smartscreener"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPjtxXyFwvCsZzHc75QlDBIqdvl3wXP7Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
