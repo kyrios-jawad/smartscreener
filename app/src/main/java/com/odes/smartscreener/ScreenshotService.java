@@ -24,6 +24,7 @@ public class ScreenshotService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        createNotificationChannel();
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Smart Screener")
                 .setContentText("Watching for new screenshots...")
