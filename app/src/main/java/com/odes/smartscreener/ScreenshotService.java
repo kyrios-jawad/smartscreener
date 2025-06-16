@@ -113,7 +113,7 @@ public class ScreenshotService extends Service {
             int rectWidth = textBounds.width() + 2 * paddingX;
             int rectHeight = textBounds.height() + 2 * paddingY;
 
-            int x = canvas.getWidth() - rectWidth - margin;
+            int x = (canvas.getWidth() - rectWidth) / 2;
             int y = margin;
 
             // Background paint (rounded semi-transparent)
